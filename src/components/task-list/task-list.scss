@@ -1,0 +1,44 @@
+.task-list {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 24px 12px;
+
+	@media (min-width: 769px) {
+		padding: 0 10vw;
+	}
+
+	@media (min-width: 1025px) {
+		padding: 0 20vw;
+	}
+
+	.task-container {
+		display: flex;
+		justify-content: space-between;
+		list-style-type: none;
+		align-items: center;
+
+		.description {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.actions {
+			display: flex;
+			flex-direction: row;
+			gap: 10px;
+
+			div {
+				padding: 5px;
+
+				&.edit {
+					color: darkgreen;
+				}
+
+				&.remove {
+					color: dimgrey;
+				}
+			}
+		}
+	}
+}
