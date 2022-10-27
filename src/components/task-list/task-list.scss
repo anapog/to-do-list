@@ -1,14 +1,11 @@
 .task-list {
 	width: 100%;
+	max-width: 400px;
 	box-sizing: border-box;
 	padding: 24px 12px;
 
 	@media (min-width: 769px) {
-		padding: 0 10vw;
-	}
-
-	@media (min-width: 1025px) {
-		padding: 0 20vw;
+		max-width: 500px;
 	}
 
 	.task-container {
@@ -33,10 +30,13 @@
 
 				&.edit {
 					color: darkgreen;
+					font-size: 18px;
 				}
+
 
 				&.remove {
 					color: dimgrey;
+					font-size: 16px;
 				}
 			}
 		}
