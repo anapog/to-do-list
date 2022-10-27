@@ -4,8 +4,6 @@ import TaskList from '../../components/task-list/task-list';
 import './to-do-list.scss';
 
 // TODO save/recover list to preserve?
-// TODO edit item
-// TODO styles
 // TODO component testing
 
 const ToDoList = (): JSX.Element => {
@@ -18,18 +16,19 @@ const ToDoList = (): JSX.Element => {
 		setList([...list, { description, id: list.length }]);
 	};
 
+	const handleEdit = (targetId: number, newValue: string) => {
+		const updatedList = list.map(item => (item.id !== targetId ? item : { ...item, description: newValue }));
+		setList(updatedList);
+	};
+
 	const removeTask = (id: number) => {
 		setList(list.filter(item => item.id !== id));
 	};
 
 	return (
-		<div className='to-do-list'>
+		<div className="to-do-list">
 			<TaskForm addTask={addTask} />
-			<TaskList
-				list={list}
-				editTask={(id: number) => console.log('*** editing description')}
-				removeTask={removeTask}
-			/>
+			<TaskList list={list} editTask={handleEdit} removeTask={removeTask} />
 		</div>
 	);
 };

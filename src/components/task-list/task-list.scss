@@ -13,11 +13,21 @@
 		justify-content: space-between;
 		list-style-type: none;
 		align-items: center;
+		gap: 10px;
 
 		.description {
+			flex: 2 1;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			border: none;
+			background-color: transparent;
+			color: black;
+			font-size: 16px;
+
+			&:focus {
+				outline: none;
+			}
 		}
 
 		.actions {
@@ -33,6 +43,10 @@
 					font-size: 18px;
 				}
 
+				&.save {
+					color: red;
+					font-size: 18px;
+				}
 
 				&.remove {
 					color: dimgrey;

@@ -1,0 +1,11 @@
+.checkbox-description {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-align: left;
+
+	&.checked {
+		text-decoration: line-through;
+		color: grey;
+	}
+}
