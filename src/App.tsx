@@ -9,8 +9,8 @@ const App = (): JSX.Element => {
 				<Routes>
 					{/* TODO add guard to check auth creds */}
 					{/* <Route path="/login" element={<Login />} /> */}
-					<Route path="/task-list" element={<ToDoList />} />
-					<Route path="*" element={<Navigate to="/task-list" replace />} />
+					<Route path="/to-do-list" element={<ToDoList />} />
+					<Route path="*" element={<Navigate to="/to-do-list" replace />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

@@ -3,7 +3,6 @@ import TaskForm from '../../components/task-form/task-form';
 import TaskList from '../../components/task-list/task-list';
 import './to-do-list.scss';
 
-// TODO save/recover list to preserve?
 // TODO component testing
 
 const ToDoList = (): JSX.Element => {
