@@ -18,5 +18,4 @@ export interface CheckboxProps {
 	label: string;
 	value: boolean;
 	onChange: (id: number) => void;
-	onEdit: (id: number, description: string) => () => void;
 }
