@@ -4,7 +4,7 @@ import './App.scss';
 
 const App = (): JSX.Element => {
 	return (
-		<div className="App">
+		<div className="app" data-testid="app">
 			<BrowserRouter>
 				<Routes>
 					{/* TODO add guard to check auth creds */}
