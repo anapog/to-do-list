@@ -67,6 +67,7 @@ const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element =>
 								label={description}
 								value={isSelected(id)}
 								onChange={onCheckboxValueChange}
+								onEdit={handleEdit}
 							></Checkbox>
 						)}
 						<div className="actions">
