@@ -11,6 +11,9 @@ const TaskForm = ({ addTask }: TaskFormProps): JSX.Element => {
 		event.preventDefault();
 	};
 
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+		setDescription(event.target.value);
+
 	return (
 		<form className="task-form" onSubmit={handleSubmit} data-testid="task-form">
 			<input
@@ -18,9 +21,15 @@ const TaskForm = ({ addTask }: TaskFormProps): JSX.Element => {
 				className="form-input"
 				value={description}
 				placeholder="New task..."
-				onChange={e => setDescription(e.target.value)}
+				onChange={handleChange}
+				data-testid="task-form-input"
 			/>
-			<button className="form-button" type="submit" disabled={!description}>
+			<button
+				className="form-button"
+				type="submit"
+				disabled={!description}
+				data-testid="task-form-button"
+			>
 				Add
 			</button>
 		</form>

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import Checkbox from '../../components/checkbox/checkbox';
 
-const handleChange = jest.fn(() => {});
+const handleChange = jest.fn();
 const UNCHECKED_MOCK = { id: 13, label: 'Description', value: false, onChange: handleChange };
 const CHECKED_MOCK = { id: 13, label: 'Description', value: true, onChange: handleChange };
 
