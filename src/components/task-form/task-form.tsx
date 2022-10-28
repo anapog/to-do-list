@@ -12,7 +12,7 @@ const TaskForm = ({ addTask }: TaskFormProps): JSX.Element => {
 	};
 
 	return (
-		<form className="task-form" onSubmit={handleSubmit}>
+		<form className="task-form" onSubmit={handleSubmit} data-testid="task-form">
 			<input
 				type="text"
 				className="form-input"

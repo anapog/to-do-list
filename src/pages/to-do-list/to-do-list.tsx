@@ -3,8 +3,6 @@ import TaskForm from '../../components/task-form/task-form';
 import TaskList from '../../components/task-list/task-list';
 import './to-do-list.scss';
 
-// TODO component testing
-
 const ToDoList = (): JSX.Element => {
 	const [list, setList] = useState([
 		{ description: 'description', id: 0 },
@@ -16,7 +14,9 @@ const ToDoList = (): JSX.Element => {
 	};
 
 	const handleEdit = (targetId: number, newValue: string) => {
-		const updatedList = list.map(item => (item.id !== targetId ? item : { ...item, description: newValue }));
+		const updatedList = list.map(item =>
+			item.id !== targetId ? item : { ...item, description: newValue }
+		);
 		setList(updatedList);
 	};
 
@@ -25,7 +25,7 @@ const ToDoList = (): JSX.Element => {
 	};
 
 	return (
-		<div className="to-do-list">
+		<div className="to-do-list" data-testid="to-do-list">
 			<TaskForm addTask={addTask} />
 			<TaskList list={list} editTask={handleEdit} removeTask={removeTask} />
 		</div>

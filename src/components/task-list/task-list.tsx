@@ -48,7 +48,7 @@ const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element =>
 	};
 
 	return (
-		<ul className="task-list">
+		<ul className="task-list" data-testid="task-list" >
 			{list?.length ? (
 				list.sort(selectedToBottom).map(({ description, id }) => (
 					<li className="task-container" key={id}>
