@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import TaskForm from '../../components/task-form/task-form';
 import TaskList from '../../components/task-list/task-list';
+import { Task } from '../../interfaces/task.interface';
 import './to-do-list.scss';
 
 const ToDoList = (): JSX.Element => {
-	const [list, setList] = useState([
-		{ description: 'description', id: 0 },
-		{ description: 'second description', id: 1 },
-	]);
+	const [list, setList] = useState<Task[]>([]);
 
 	const addTask = (description: string) => {
 		setList([...list, { description, id: list.length }]);
