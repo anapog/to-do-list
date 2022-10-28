@@ -7,8 +7,13 @@ const Checkbox = ({ id, label, value, onChange }: CheckboxProps) => {
 	};
 
 	return (
-		<label className={`checkbox-description ${value ? 'checked' : ''}`}>
-			<input type="checkbox" checked={value} onChange={handleChange} />
+		<label className={`checkbox-description ${value ? 'checked' : ''}`} data-testid="checkbox">
+			<input
+				type="checkbox"
+				checked={value}
+				onChange={handleChange}
+				data-testid="checkbox-input"
+			/>
 			{label}
 		</label>
 	);
