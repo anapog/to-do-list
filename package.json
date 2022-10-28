@@ -22,7 +22,9 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
+		"test": "jest --config=config/jest.config.js",
+		"test:watch": "jest --config=config/jest.config.js --watch --maxWorkers=25%",
+		"test:coverage": "jest --config=config/jest.config.js --coverage",
 		"eject": "react-scripts eject",
 		"predeploy": "npm run build",
 		"deploy": "gh-pages -b deploy -d build"
@@ -49,6 +51,8 @@
 	"devDependencies": {
 		"eslint-config-prettier": "^8.5.0",
 		"gh-pages": "^4.0.0",
+		"jest": "^27.5.1",
+		"jest-environment-jsdom": "^27.5.1",
 		"node-sass": "^7.0.3",
 		"prettier": "^2.7.1"
 	}
