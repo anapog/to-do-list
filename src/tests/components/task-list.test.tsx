@@ -50,7 +50,6 @@ const initialListSetup = () => {
 
 describe('<TaskList /> test suite', () => {
 	afterEach(cleanup);
-	jest.useFakeTimers();
 
 	test('should render empty message when no item list length', () => {
 		const {
@@ -82,52 +81,65 @@ describe('<TaskList /> test suite', () => {
 		expect(editedItem).toBe(null);
 	});
 
-	test('should call removeTask when user clicks on remove icon', async () => {
-		const { removeButton } = initialListSetup();
-		fireEvent.click(removeButton[0]);
-		expect(removeTask).toHaveBeenCalledWith(0);
+	describe('handle action button events', () => {
+		test('should call removeTask when user clicks on remove icon', async () => {
+			const { removeButton } = initialListSetup();
+			fireEvent.click(removeButton[0]);
+			expect(removeTask).toHaveBeenCalledWith(0);
+		});
+
+		test('should not call editTask when user clicks on edition icon', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			expect(editTask).not.toHaveBeenCalled();
+		});
+
+		test('should call editTask when user saves edited item through click', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			fireEvent.click(editButton[0]);
+			expect(editTask).toHaveBeenCalled();
+		});
+
+		test('should call editTask when user saves edited item through enter key', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			const editInput = screen.getByTestId('task-list-item-input');
+			fireEvent.keyDown(editInput, { key: 'Enter', code: 'Enter', charCode: 13 });
+			expect(editTask).toHaveBeenCalled();
+		});
 	});
 
-	test('should not call editTask when user clicks on edition icon', () => {
-		const { editButton } = initialListSetup();
-		fireEvent.click(editButton[0]);
-		expect(editTask).not.toHaveBeenCalled();
-	});
+	describe('handle view on edition and save', () => {
+		test('should display edition input with its value when edit is clicked', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			const editInput = screen.getByTestId('task-list-item-input');
+			expect(editInput).toBeInTheDocument();
+			expect(editInput.getAttribute('value')).toBe(MOCK_LIST[0].description);
+		});
 
-	test('should call editTask when user saves edited item', () => {
-		const { editButton } = initialListSetup();
-		fireEvent.click(editButton[0]);
-		fireEvent.click(editButton[0]);
-		expect(editTask).toHaveBeenCalled();
-	});
+		test('should change edition input value when user edits and writes', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			const editInput = screen.getByTestId('task-list-item-input');
+			fireEvent.change(editInput, { target: { value: EDITED_VALUE } });
+			expect(editInput.getAttribute('value')).toBe(EDITED_VALUE);
+		});
 
-	test('should display edition input when edit is clicked', () => {
-		const { editButton } = initialListSetup();
-		fireEvent.click(editButton[0]);
-		const editInput = screen.getByTestId('task-list-item-input');
-		expect(editInput).toBeInTheDocument();
-	});
+		test('should hide edition input when saving', () => {
+			const { editButton } = initialListSetup();
+			fireEvent.click(editButton[0]);
+			const editInput = screen.getByTestId('task-list-item-input');
+			fireEvent.click(editButton[0]);
+			expect(editInput).not.toBeInTheDocument();
+		});
 
-	test('should change edition input value when user edits and writes', () => {
-		const { editButton } = initialListSetup();
-		fireEvent.click(editButton[0]);
-		const editInput = screen.getByTestId('task-list-item-input');
-		fireEvent.change(editInput, { target: { value: EDITED_VALUE } });
-		expect(editInput.getAttribute('value')).toBe(EDITED_VALUE);
-	});
-
-	test('should hide edition input when saving', () => {
-		const { editButton } = initialListSetup();
-		fireEvent.click(editButton[0]);
-		const editInput = screen.getByTestId('task-list-item-input');
-		fireEvent.click(editButton[0]);
-		expect(editInput).not.toBeInTheDocument();
-	});
-
-	test('should change icon class when changing between edition and save', () => {
-		const { editButton } = initialListSetup();
-		expect(editButton[0]).toHaveClass('edit');
-		fireEvent.click(editButton[0]);
-		expect(editButton[0]).toHaveClass('save');
+		test('should change icon class when changing between edition and save', () => {
+			const { editButton } = initialListSetup();
+			expect(editButton[0]).toHaveClass('edit');
+			fireEvent.click(editButton[0]);
+			expect(editButton[0]).toHaveClass('save');
+		});
 	});
 });

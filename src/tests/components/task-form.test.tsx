@@ -33,23 +33,27 @@ describe('<TaskForm /> test suite', () => {
 		expect(button).toBeInTheDocument();
 	});
 
-	test('should disable add button until content is added', () => {
+	test('should disable add button when no content', () => {
 		render(<TaskForm {...MOCK_DATA} />);
 		const button = screen.getByTestId('task-form-button');
+		fireEvent.click(button);
 		expect(button).toHaveAttribute('disabled');
+		expect(addTask).not.toHaveBeenCalled();
 	});
 
-	test('should enable add button on content added', () => {
+	test('should enable add button when content added', () => {
 		const { button } = addValueSetup();
 		expect(button).not.toHaveAttribute('disabled');
 	});
 
-	test('should add written value to input', () => {
+	test('should add value to input when user writes', () => {
 		const { input } = addValueSetup();
+		const placeholder = screen.queryByText('New task...');
 		expect(input.getAttribute('value')).toBe(INPUT_VALUE);
+		expect(placeholder).toBe(null);
 	});
 
-	test('should reset input value and call addTask after form submision', () => {
+	test('should reset input value and call addTask when form submision', () => {
 		const { input, button } = addValueSetup();
 		fireEvent.click(button);
 		expect(input.getAttribute('value')).toBe('');

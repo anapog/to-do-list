@@ -6,6 +6,7 @@ module.exports = {
 		'!**/node_modules/**',
 		'!**/*.d.{ts,tsx}',
 		'!**/*.interface.{ts,tsx}',
+		'!**/index.tsx',
 	],
 	coverageDirectory: 'coverage',
 	testEnvironment: 'jsdom',

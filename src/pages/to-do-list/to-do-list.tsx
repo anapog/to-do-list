@@ -7,18 +7,17 @@ import './to-do-list.scss';
 const ToDoList = (): JSX.Element => {
 	const [list, setList] = useState<Task[]>([]);
 
-	const addTask = (description: string) => {
+	const addTask = (description: string): void => {
 		setList([...list, { description, id: list.length }]);
 	};
 
-	const handleEdit = (targetId: number, newValue: string) => {
-		const updatedList = list.map(item =>
-			item.id !== targetId ? item : { ...item, description: newValue }
+	const handleEdit = (targetId: number, newValue: string): void => {
+		setList(
+			list.map(item => (item.id !== targetId ? item : { ...item, description: newValue }))
 		);
-		setList(updatedList);
 	};
 
-	const removeTask = (id: number) => {
+	const removeTask = (id: number): void => {
 		setList(list.filter(item => item.id !== id));
 	};
 

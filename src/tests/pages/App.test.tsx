@@ -10,7 +10,8 @@ describe('<App /> test suite', () => {
 		expect(applicationContainer).toBeInTheDocument();
 	});
 
-	test('shoudl redirect to main page', () => {
+	// TODO update with login page
+	test('should redirect to main page', () => {
 		render(<App />);
 		expect(screen.getByTestId('to-do-list')).toBeInTheDocument();
 	});
