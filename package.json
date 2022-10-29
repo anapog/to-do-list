@@ -22,9 +22,8 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "jest --config=config/jest.config.js",
+		"test": "jest --config=config/jest.config.js --coverage",
 		"test:watch": "jest --config=config/jest.config.js --watch --maxWorkers=25%",
-		"test:coverage": "jest --config=config/jest.config.js --coverage",
 		"eject": "react-scripts eject",
 		"predeploy": "npm run build",
 		"deploy": "gh-pages -b deploy -d build"
