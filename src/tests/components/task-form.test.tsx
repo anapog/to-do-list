@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import TaskForm from '../../components/task-form/task-form';
 
 const addTask = jest.fn();
@@ -23,6 +23,8 @@ const addValueSetup = () => {
 };
 
 describe('<TaskForm /> test suite', () => {
+	afterEach(cleanup);
+
 	test('should render form', () => {
 		const { form, input, placeholder, button } = emptyFormSetup();
 		expect(form).toBeInTheDocument();

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Task, TaskListProps } from '../../interfaces/task.interface';
 import { FaEdit, FaTrashAlt, FaRegSave } from 'react-icons/fa';
-import './task-list.scss';
 import Checkbox from '../checkbox/checkbox';
+import './task-list.scss';
 
 const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element => {
 	const [editedItem, setEditedItem] = useState<number>();
@@ -48,10 +48,10 @@ const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element =>
 	};
 
 	return (
-		<ul className="task-list" data-testid="task-list" >
+		<ul className="task-list" data-testid="task-list">
 			{list?.length ? (
 				list.sort(selectedToBottom).map(({ description, id }) => (
-					<li className="task-container" key={id}>
+					<li className="task-container" key={id} data-testid="task-list-item">
 						{isEditing(id) ? (
 							<input
 								type="text"
@@ -60,6 +60,7 @@ const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element =>
 								autoFocus
 								onChange={handleInputChange}
 								onKeyDown={handleKeyDown(id, description)}
+								data-testid="task-list-item-input"
 							/>
 						) : (
 							<Checkbox
@@ -69,21 +70,26 @@ const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element =>
 								onChange={onCheckboxValueChange}
 							></Checkbox>
 						)}
-						<div className="actions">
+						<div className="actions" data-testid="task-list-actions">
 							<div
 								className={`${isEditing(id) ? 'save' : 'edit'}`}
 								onClick={handleEdit(id, description)}
+								data-testid="actions-edit-save"
 							>
 								{isEditing(id) ? <FaRegSave /> : <FaEdit />}
 							</div>
-							<div className="remove" onClick={handleRemove(id)}>
+							<div
+								className="remove"
+								onClick={handleRemove(id)}
+								data-testid="actions-remove"
+							>
 								<FaTrashAlt />
 							</div>
 						</div>
 					</li>
 				))
 			) : (
-				<p>Sorry, there are no items to be displayed</p>
+				<p data-testid="task-list-empty">Sorry, there are no items to be displayed</p>
 			)}
 		</ul>
 	);

@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import ToDoList from '../../pages/to-do-list/to-do-list';
 
 describe('<ToDoList /> test suite', () => {
+	afterEach(cleanup);
+
 	test('should render to-do-list container', () => {
 		render(<ToDoList />);
 		const listContainer = screen.getByTestId('to-do-list');

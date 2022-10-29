@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import Checkbox from '../../components/checkbox/checkbox';
 
 const handleChange = jest.fn();
@@ -6,6 +6,8 @@ const UNCHECKED_MOCK = { id: 13, label: 'Description', value: false, onChange: h
 const CHECKED_MOCK = { id: 13, label: 'Description', value: true, onChange: handleChange };
 
 describe('<Checkbox /> test suite', () => {
+	afterEach(cleanup);
+
 	test('should render checkbox and label', () => {
 		render(<Checkbox {...UNCHECKED_MOCK} />);
 		const checkbox = screen.getByTestId('checkbox');

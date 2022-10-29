@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import App from '../../App';
 
 describe('<App /> test suite', () => {
+	afterEach(cleanup);
+
 	test('should render app container', () => {
 		render(<App />);
 		const applicationContainer = screen.getByTestId('app');
