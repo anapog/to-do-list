@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { TaskFormProps } from '../../interfaces/task.interface';
+import { TaskFormProps } from '../../interfaces/task-form.interface';
 import './task-form.scss';
 
 const TaskForm = ({ addTask }: TaskFormProps): JSX.Element => {

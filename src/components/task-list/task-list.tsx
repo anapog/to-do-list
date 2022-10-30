@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Task, TaskListProps } from '../../interfaces/task.interface';
+import { TaskListProps } from '../../interfaces/task-list.interface';
+import { Task } from '../../interfaces/task.interface';
 import { FaEdit, FaTrashAlt, FaRegSave } from 'react-icons/fa';
 import Checkbox from '../checkbox/checkbox';
 import './task-list.scss';

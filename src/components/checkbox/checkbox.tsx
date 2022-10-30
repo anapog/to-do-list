@@ -1,4 +1,4 @@
-import { CheckboxProps } from '../../interfaces/task.interface';
+import { CheckboxProps } from '../../interfaces/checkbox.interface';
 import './checkbox.scss';
 
 const Checkbox = ({ id, label, value, onChange }: CheckboxProps) => {
