@@ -10,7 +10,6 @@ jest.mock('react-router-dom', () => ({
 
 const mockLogout = jest.fn();
 jest.mock('../../providers/auth.provider', () => ({
-	useUser: jest.fn(),
 	useAuth: jest.fn(),
 }));
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;

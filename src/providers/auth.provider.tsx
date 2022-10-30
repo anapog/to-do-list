@@ -2,13 +2,13 @@ import { createContext, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { SESSION_COOKIE_KEY, INVENTED_TOKEN } from '../constants/login';
 import { INITIAL_USER } from '../constants/user';
-import { Auth, AuthContext, UserHook } from '../interfaces/login.interface';
+import { Auth, AuthContext } from '../interfaces/login.interface';
 import { User } from '../interfaces/user.interface';
 import { getLoginCookieOptions } from '../utils/authentication.utils';
 
-const TodoAuthContext = createContext({} as AuthContext);
+const ToDoListAuthContext = createContext({} as AuthContext);
 
-export const useAuthContext = () => useContext(TodoAuthContext);
+export const useAuthContext = () => useContext(ToDoListAuthContext);
 
 const AuthProvider = ({ children }: { children: any }) => {
 	const [user, setUser] = useState<User>(INITIAL_USER);
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: any }) => {
 	};
 
 	return (
-		<TodoAuthContext.Provider
+		<ToDoListAuthContext.Provider
 			value={{
 				user,
 				setUser,
@@ -38,13 +38,8 @@ const AuthProvider = ({ children }: { children: any }) => {
 			}}
 		>
 			<>{children}</>
-		</TodoAuthContext.Provider>
+		</ToDoListAuthContext.Provider>
 	);
-};
-
-export const useUser = (): UserHook => {
-	const { user, setUser } = useAuthContext();
-	return { ...user, setUser };
 };
 
 export const useAuth = (): Auth => {

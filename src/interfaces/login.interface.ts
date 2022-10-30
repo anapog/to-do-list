@@ -6,10 +6,6 @@ export interface AuthMethods {
 	logout: () => Promise<boolean>;
 }
 
-export interface UserHook extends Partial<User> {
-	setUser: Dispatch<SetStateAction<User>>;
-}
-
 export interface AuthContext {
 	user: User;
 	setUser: Dispatch<SetStateAction<User>>;
