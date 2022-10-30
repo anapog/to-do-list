@@ -1,21 +1,10 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import TaskForm from '../../components/task-form/task-form';
 
-const addTask = jest.fn();
-const MOCK_DATA = { addTask };
 const INPUT_VALUE = 'test';
 
-const emptyFormSetup = () => {
-	render(<TaskForm {...MOCK_DATA} />);
-	const form = screen.getByTestId('task-form');
-	const input = screen.getByTestId('task-form-input');
-	const placeholder = screen.getByPlaceholderText('New task...');
-	const button = screen.getByTestId('task-form-button');
-	return { form, input, placeholder, button };
-};
-
-const addValueSetup = () => {
-	render(<TaskForm {...MOCK_DATA} />);
+const addValueSetup = (addTask: (description: string) => void) => {
+	render(<TaskForm addTask={addTask} />);
 	const input = screen.getByTestId('task-form-input');
 	const button = screen.getByTestId('task-form-button');
 	fireEvent.change(input, { target: { value: INPUT_VALUE } });
@@ -26,7 +15,12 @@ describe('<TaskForm /> test suite', () => {
 	afterEach(cleanup);
 
 	test('should render form', () => {
-		const { form, input, placeholder, button } = emptyFormSetup();
+		const addTask = jest.fn();
+		render(<TaskForm addTask={addTask} />);
+		const form = screen.getByTestId('task-form');
+		const input = screen.getByTestId('task-form-input');
+		const placeholder = screen.getByPlaceholderText('New task...');
+		const button = screen.getByTestId('task-form-button');
 		expect(form).toBeInTheDocument();
 		expect(input).toBeInTheDocument();
 		expect(placeholder).toBeInTheDocument();
@@ -34,7 +28,8 @@ describe('<TaskForm /> test suite', () => {
 	});
 
 	test('should disable add button when no content', () => {
-		render(<TaskForm {...MOCK_DATA} />);
+		const addTask = jest.fn();
+		render(<TaskForm addTask={addTask} />);
 		const button = screen.getByTestId('task-form-button');
 		fireEvent.click(button);
 		expect(button).toHaveAttribute('disabled');
@@ -42,21 +37,23 @@ describe('<TaskForm /> test suite', () => {
 	});
 
 	test('should enable add button when content added', () => {
-		const { button } = addValueSetup();
+		const addTask = jest.fn();
+		const { button } = addValueSetup(addTask);
 		expect(button).not.toHaveAttribute('disabled');
 	});
 
-	test('should add value to input when user writes', () => {
-		const { input } = addValueSetup();
-		const placeholder = screen.queryByText('New task...');
-		expect(input.getAttribute('value')).toBe(INPUT_VALUE);
-		expect(placeholder).toBe(null);
-	});
-
-	test('should reset input value and call addTask when form submision', () => {
-		const { input, button } = addValueSetup();
+	test('should reset input value when form submision', () => {
+		const addTask = jest.fn();
+		const { input, button } = addValueSetup(addTask);
 		fireEvent.click(button);
 		expect(input.getAttribute('value')).toBe('');
+	});
+
+	test('should call addTask when form submision', () => {
+		const addTask = jest.fn();
+		const { button } = addValueSetup(addTask);
+		fireEvent.click(button);
 		expect(addTask).toHaveBeenCalledTimes(1);
+		expect(addTask).toHaveBeenCalledWith(INPUT_VALUE);
 	});
 });

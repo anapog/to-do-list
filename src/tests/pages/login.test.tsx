@@ -1,32 +1,29 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import Login from '../../pages/login/login';
+import { useAuth } from '../../providers/auth.provider';
 
 const USERNAME = 'username';
 const PASSWORD = 'password';
 
-const mockedUsedNavigate = jest.fn();
+const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: () => mockedUsedNavigate,
+	useNavigate: () => mockedNavigate,
 }));
 
+const mockLogin = jest.fn();
 jest.mock('../../providers/auth.provider', () => ({
-	...jest.requireActual('../../providers/auth.provider'),
-	useUser: () => ({ setUser: jest.fn() }),
-	useAuth: () => ({
-		user: { username: '', password: '' },
-		login: jest.fn(),
-		logout: jest.fn(),
-	}),
+	useUser: jest.fn(),
+	useAuth: jest.fn(),
 }));
+const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+mockedUseAuth.mockReturnValue({
+	user: { username: '', password: '' },
+	login: mockLogin,
+	logout: jest.fn(),
+});
 
 const initialSetup = () => {
-	render(
-		<BrowserRouter>
-			<Login />
-		</BrowserRouter>
-	);
+	render(<Login />);
 	const container = screen.getByTestId('login');
 	const header = screen.getByText('To Do List');
 	const intro = screen.getByText('Log in to continue:');
@@ -78,7 +75,9 @@ describe('<Login /> test suite', () => {
 
 	test('should have disabled attribute in button when no inputs', () => {
 		const { button } = initialSetup();
+		fireEvent.click(button);
 		expect(button).toHaveAttribute('disabled');
+		expect(mockLogin).not.toHaveBeenCalled();
 	});
 
 	test('should enable button when content is added', () => {
@@ -86,5 +85,21 @@ describe('<Login /> test suite', () => {
 		fireEvent.change(userInput, { target: { value: USERNAME } });
 		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
 		expect(button).not.toHaveAttribute('disabled');
+	});
+
+	test('should call login when user submits form', () => {
+		const { button, userInput, passwordInput } = initialSetup();
+		fireEvent.change(userInput, { target: { value: USERNAME } });
+		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
+		fireEvent.click(button);
+		expect(mockLogin).toHaveBeenCalledWith({ username: USERNAME, password: PASSWORD });
+	});
+
+	test('should call navigate when user logs in', () => {
+		const { button, userInput, passwordInput } = initialSetup();
+		fireEvent.change(userInput, { target: { value: USERNAME } });
+		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
+		fireEvent.click(button);
+		expect(mockedNavigate).toHaveBeenCalledTimes(1);
 	});
 });

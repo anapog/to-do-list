@@ -8,7 +8,6 @@ import './task-list.scss';
 const TaskList = ({ list, removeTask, editTask }: TaskListProps): JSX.Element => {
 	const [editedItem, setEditedItem] = useState<number>();
 	const [selectedItem, setSelectedItem] = useState<number[]>([]);
-
 	const [newValue, setNewValue] = useState<string>('');
 
 	const handleEdit = (id: number, description: string) => (): void => {

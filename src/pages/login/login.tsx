@@ -5,7 +5,7 @@ import { useAuth } from '../../providers/auth.provider';
 import './login.scss';
 
 const Login = (): JSX.Element => {
-	const { user, login } = useAuth();
+	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -13,12 +13,11 @@ const Login = (): JSX.Element => {
 	const handleLogin = async (event: FormEvent): Promise<void> => {
 		event.preventDefault();
 		try {
-			await login(user);
+			await login({ username, password });
 			navigate(HOME_PATH);
 		} catch (error) {
 			console.error(error);
 		}
-		// TODO persistently save token
 	};
 
 	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {

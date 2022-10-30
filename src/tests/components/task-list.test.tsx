@@ -48,6 +48,12 @@ const initialListSetup = () => {
 	};
 };
 
+const editInputChange = () => {
+	const editInput = screen.getByTestId('task-list-item-input');
+	fireEvent.change(editInput, { target: { value: EDITED_VALUE } });
+	return { editInput };
+};
+
 describe('<TaskList /> test suite', () => {
 	afterEach(cleanup);
 
@@ -97,16 +103,17 @@ describe('<TaskList /> test suite', () => {
 		test('should call editTask when user saves edited item through click', () => {
 			const { editButton } = initialListSetup();
 			fireEvent.click(editButton[0]);
+			editInputChange();
 			fireEvent.click(editButton[0]);
-			expect(editTask).toHaveBeenCalled();
+			expect(editTask).toHaveBeenCalledWith(MOCK_LIST[0].id, EDITED_VALUE);
 		});
 
 		test('should call editTask when user saves edited item through enter key', () => {
 			const { editButton } = initialListSetup();
 			fireEvent.click(editButton[0]);
-			const editInput = screen.getByTestId('task-list-item-input');
+			const { editInput } = editInputChange();
 			fireEvent.keyDown(editInput, { key: 'Enter', code: 'Enter', charCode: 13 });
-			expect(editTask).toHaveBeenCalled();
+			expect(editTask).toHaveBeenCalledWith(MOCK_LIST[0].id, EDITED_VALUE);
 		});
 	});
 
@@ -122,8 +129,7 @@ describe('<TaskList /> test suite', () => {
 		test('should change edition input value when user edits and writes', () => {
 			const { editButton } = initialListSetup();
 			fireEvent.click(editButton[0]);
-			const editInput = screen.getByTestId('task-list-item-input');
-			fireEvent.change(editInput, { target: { value: EDITED_VALUE } });
+			const { editInput } = editInputChange();
 			expect(editInput.getAttribute('value')).toBe(EDITED_VALUE);
 		});
 
