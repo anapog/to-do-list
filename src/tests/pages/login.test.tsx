@@ -1,12 +1,32 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { INITIAL_USER } from '../../constants/user';
+import { BrowserRouter } from 'react-router-dom';
 import Login from '../../pages/login/login';
 
 const USERNAME = 'username';
 const PASSWORD = 'password';
 
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+	...jest.requireActual('react-router-dom'),
+	useNavigate: () => mockedUsedNavigate,
+}));
+
+jest.mock('../../providers/auth.provider', () => ({
+	...jest.requireActual('../../providers/auth.provider'),
+	useUser: () => ({ setUser: jest.fn() }),
+	useAuth: () => ({
+		user: { username: '', password: '' },
+		login: jest.fn(),
+		logout: jest.fn(),
+	}),
+}));
+
 const initialSetup = () => {
-	render(<Login />);
+	render(
+		<BrowserRouter>
+			<Login />
+		</BrowserRouter>
+	);
 	const container = screen.getByTestId('login');
 	const header = screen.getByText('To Do List');
 	const intro = screen.getByText('Log in to continue:');
@@ -66,14 +86,5 @@ describe('<Login /> test suite', () => {
 		fireEvent.change(userInput, { target: { value: USERNAME } });
 		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
 		expect(button).not.toHaveAttribute('disabled');
-	});
-
-	test('should reset input values when form submision', () => {
-		const { button, userInput, passwordInput } = initialSetup();
-		fireEvent.change(userInput, { target: { value: USERNAME } });
-		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
-		fireEvent.click(button);
-		expect(userInput.getAttribute('value')).toBe(INITIAL_USER.username);
-		expect(passwordInput.getAttribute('value')).toBe(INITIAL_USER.password);
 	});
 });

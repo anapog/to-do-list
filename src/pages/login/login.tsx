@@ -1,24 +1,32 @@
 import { FormEvent, useState } from 'react';
-import { INITIAL_USER } from '../../constants/user';
-import { User } from '../../interfaces/user.interface';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../providers/auth.provider';
 import './login.scss';
 
 const Login = (): JSX.Element => {
-	const [user, setUser] = useState<User>(INITIAL_USER);
+	const { user, login } = useAuth();
+	const navigate = useNavigate();
+	const [username, setUsername] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
 
-	const handleLogin = (event: FormEvent): void => {
+	const handleLogin = async (event: FormEvent): Promise<void> => {
 		event.preventDefault();
-		// TODO call fake request service
+		try {
+			await login(user);
+			navigate('/');
+		} catch (error) {
+			console.error(error);
+		}
 		// TODO persistently save token
-		setUser(INITIAL_USER);
 	};
 
-	const handleInputChange =
-		(propertyName: string) =>
-		(event: React.ChangeEvent<HTMLInputElement>): void => {
-			const updatedUser: User = { ...user, [propertyName]: event.target.value };
-			setUser({ ...updatedUser });
-		};
+	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		setUsername(event.target.value);
+	};
+
+	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		setPassword(event.target.value);
+	};
 
 	return (
 		<div className="login" data-testid="login">
@@ -33,23 +41,23 @@ const Login = (): JSX.Element => {
 					<input
 						type="text"
 						className="form-input"
-						value={user.username}
+						value={username}
 						placeholder="Username"
-						onChange={handleInputChange('username')}
+						onChange={handleUsernameChange}
 						data-testid="form-input-username"
 					/>
 					<input
 						type="password"
 						className="form-input"
-						value={user.password}
+						value={password}
 						placeholder="Password"
-						onChange={handleInputChange('password')}
+						onChange={handlePasswordChange}
 						data-testid="form-input-password"
 					/>
 					<button
 						className="form-button"
 						type="submit"
-						disabled={!user.username || !user.password}
+						disabled={!username?.length || !password?.length}
 						data-testid="login-form-button"
 					>
 						Login

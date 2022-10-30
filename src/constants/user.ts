@@ -1,1 +1,1 @@
-export const INITIAL_USER = { username: '', password: '' };
+export const INITIAL_USER = { username: undefined, password: undefined };

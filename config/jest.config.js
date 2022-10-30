@@ -6,6 +6,7 @@ module.exports = {
 		'!**/node_modules/**',
 		'!**/*.d.{ts,tsx}',
 		'!**/*.interface.{ts,tsx}',
+		'!**/constants/**',
 		'!**/index.tsx',
 	],
 	coverageDirectory: 'coverage',
