@@ -1,34 +1,29 @@
 import { createContext, useContext, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { SESSION_COOKIE_KEY, INVENTED_TOKEN } from '../constants/login';
 import { INITIAL_USER } from '../constants/user';
-import { Auth, AuthContext, AuthMethods, UserHook } from '../interfaces/login.interface';
+import { Auth, AuthContext, UserHook } from '../interfaces/login.interface';
 import { User } from '../interfaces/user.interface';
+import { getLoginCookieOptions } from '../utils/authentication.utils';
 
 const TodoAuthContext = createContext({} as AuthContext);
 
 export const useAuthContext = () => useContext(TodoAuthContext);
 
-const AuthProvider = ({
-	authMethods,
-	children,
-}: {
-	authMethods?: Partial<AuthMethods>;
-	children: any;
-}) => {
+const AuthProvider = ({ children }: { children: any }) => {
 	const [user, setUser] = useState<User>(INITIAL_USER);
+	const [, setCookie, removeCookie] = useCookies([SESSION_COOKIE_KEY]);
 
 	const login = async (userData: User): Promise<User> => {
 		setUser(userData);
-		return new Promise((resolve, reject) => resolve(userData));
+		setCookie(SESSION_COOKIE_KEY, INVENTED_TOKEN, getLoginCookieOptions());
+		return new Promise(resolve => resolve(userData));
 	};
 
 	const logout = async (): Promise<boolean> => {
 		setUser(INITIAL_USER);
-		return new Promise((resolve, reject) => resolve(true));
-	};
-
-	const composedAuthMethods = {
-		login: authMethods?.login || login,
-		logout: authMethods?.logout || logout,
+		removeCookie(SESSION_COOKIE_KEY, getLoginCookieOptions());
+		return new Promise(resolve => resolve(true));
 	};
 
 	return (
@@ -36,7 +31,10 @@ const AuthProvider = ({
 			value={{
 				user,
 				setUser,
-				authMethods: composedAuthMethods,
+				authMethods: {
+					login,
+					logout,
+				},
 			}}
 		>
 			<>{children}</>
@@ -45,8 +43,8 @@ const AuthProvider = ({
 };
 
 export const useUser = (): UserHook => {
-    const { user, setUser } = useAuthContext();
-    return { ...user, setUser };
+	const { user, setUser } = useAuthContext();
+	return { ...user, setUser };
 };
 
 export const useAuth = (): Auth => {

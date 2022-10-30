@@ -1,0 +1,12 @@
+.app-header {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+
+	.header-logout {
+		font-size: 26px;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+	}
+}

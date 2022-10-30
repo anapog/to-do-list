@@ -1,22 +1,22 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ToDoList from './pages/to-do-list/to-do-list';
-import ProtectedRoute from './components/protected-route/protected-route';
+import ProtectedRoute from './components/route-check/protected-route';
+import AuthenticationRoute from './components/route-check/authentication-route';
 import Login from './pages/login/login';
+import { HOME_PATH, LOGIN_PATH } from './constants/route-paths';
 import './App.scss';
 
 const App = (): JSX.Element => {
-	// TODO get session cookie
-	const isAuth = true;
-
 	return (
 		<div className="app" data-testid="app">
 			<Routes>
-				{/* TODO add guard to check auth creds */}
-				<Route path="/login" element={isAuth ? <Navigate to="/to-do-list" /> : <Login />} />
-				<Route element={<ProtectedRoute auth={isAuth} />}>
-					<Route path="/to-do-list" element={<ToDoList />} />
+				<Route element={<ProtectedRoute />}>
+					<Route path={HOME_PATH} element={<ToDoList />} />
 				</Route>
-				<Route path="*" element={<Navigate to="/to-do-list" replace />} />
+				<Route element={<AuthenticationRoute />}>
+					<Route path={LOGIN_PATH} element={<Login />} />
+				</Route>
+				<Route path="*" element={<Navigate to={HOME_PATH} replace />} />
 			</Routes>
 		</div>
 	);

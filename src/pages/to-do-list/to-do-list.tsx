@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Header from '../../components/header/header';
 import TaskForm from '../../components/task-form/task-form';
 import TaskList from '../../components/task-list/task-list';
 import { Task } from '../../interfaces/task.interface';
@@ -23,6 +24,7 @@ const ToDoList = (): JSX.Element => {
 
 	return (
 		<div className="to-do-list" data-testid="to-do-list">
+			<Header />
 			<TaskForm addTask={addTask} />
 			<TaskList list={list} editTask={handleEdit} removeTask={removeTask} />
 		</div>
