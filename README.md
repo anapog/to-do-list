@@ -16,7 +16,7 @@ This project was created with React 18 and tested with React Testing Library alo
 
 ## Installation
 
-To install the project simply run `npm i` to install all the dependencies.
+To install the project simply run `npm i` with Node >= 16 to install all the dependencies.
 
 ## Available Scripts
 
