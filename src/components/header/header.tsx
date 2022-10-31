@@ -1,17 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { LOGIN_PATH } from '../../constants/route-paths';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth } from '../../hooks/useAuth';
 import { FiLogOut } from 'react-icons/fi';
 import './header.scss';
 
 const Header = (): JSX.Element => {
 	const { logout } = useAuth();
-	const navigate = useNavigate();
 
 	const handleLogout = async (): Promise<void> => {
 		try {
 			await logout();
-			navigate(LOGIN_PATH);
 		} catch (error) {
 			console.error(error);
 		}

@@ -1,18 +1,15 @@
 import { cleanup, fireEvent, screen, render } from '@testing-library/react';
 import Header from '../../components/header/header';
-import { useAuth } from '../../providers/auth.provider';
-import { LOGIN_PATH } from '../../constants/route-paths';
+import { useAuth } from '../../hooks/useAuth';
 
 const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
 	useNavigate: () => mockedNavigate,
 }));
 
-const mockLogout = jest.fn();
-jest.mock('../../providers/auth.provider', () => ({
-	useAuth: jest.fn(),
-}));
+jest.mock('../../hooks/useAuth');
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockLogout = jest.fn();
 mockedUseAuth.mockReturnValue({
 	user: { username: '', password: '' },
 	login: jest.fn(),
@@ -39,12 +36,5 @@ describe('<Header /> test suite', () => {
 		const { button } = initialSetup();
 		fireEvent.click(button);
 		expect(mockLogout).toHaveBeenCalledTimes(1);
-	});
-
-	test('should call navigate when logout is done', () => {
-		const { button } = initialSetup();
-		fireEvent.click(button);
-		expect(mockedNavigate).toHaveBeenCalledTimes(1);
-		expect(mockedNavigate).toHaveBeenCalledWith(LOGIN_PATH);
 	});
 });

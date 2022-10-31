@@ -1,12 +1,9 @@
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { HOME_PATH } from '../../constants/route-paths';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth } from '../../hooks/useAuth';
 import './login.scss';
 
 const Login = (): JSX.Element => {
 	const { login } = useAuth();
-	const navigate = useNavigate();
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
@@ -14,7 +11,6 @@ const Login = (): JSX.Element => {
 		event.preventDefault();
 		try {
 			await login({ username, password });
-			navigate(HOME_PATH);
 		} catch (error) {
 			console.error(error);
 		}

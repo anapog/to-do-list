@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth } from '../../hooks/useAuth';
+import { AuthProvider, useAuthContext } from '../../providers/auth.provider';
 
-jest.mock('../../providers/auth.provider', () => ({
-	useAuth: jest.fn(),
-}));
+jest.mock('../../hooks/useAuth');
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 mockedUseAuth.mockReturnValue({
 	user: { username: 'user', password: 'pass' },
@@ -11,8 +10,8 @@ mockedUseAuth.mockReturnValue({
 	logout: jest.fn(),
 });
 
-const UseAuthTestingComponent = () => {
-	const { user } = useAuth();
+const ProviderTestingComponent = () => {
+	const { user } = useAuthContext();
 
 	return (
 		<>
@@ -24,7 +23,11 @@ const UseAuthTestingComponent = () => {
 
 describe('<AuthProvider />', () => {
 	test('provides expected useAuth information to children', () => {
-		render(<UseAuthTestingComponent />);
+		render(
+			<AuthProvider>
+				<ProviderTestingComponent />
+			</AuthProvider>
+		);
 		const userName = screen.getByText('user');
 		const password = screen.getByText('pass');
 		expect(userName).toBeInTheDocument();

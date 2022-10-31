@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import Login from '../../pages/login/login';
-import { useAuth } from '../../providers/auth.provider';
+import { useAuth } from '../../hooks/useAuth';
 
 const USERNAME = 'username';
 const PASSWORD = 'password';
@@ -10,11 +10,9 @@ jest.mock('react-router-dom', () => ({
 	useNavigate: () => mockedNavigate,
 }));
 
-const mockLogin = jest.fn();
-jest.mock('../../providers/auth.provider', () => ({
-	useAuth: jest.fn(),
-}));
+jest.mock('../../hooks/useAuth');
 const mockedUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockLogin = jest.fn();
 mockedUseAuth.mockReturnValue({
 	user: { username: '', password: '' },
 	login: mockLogin,
@@ -92,13 +90,5 @@ describe('<Login /> test suite', () => {
 		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
 		fireEvent.click(button);
 		expect(mockLogin).toHaveBeenCalledWith({ username: USERNAME, password: PASSWORD });
-	});
-
-	test('should call navigate when user logs in', () => {
-		const { button, userInput, passwordInput } = initialSetup();
-		fireEvent.change(userInput, { target: { value: USERNAME } });
-		fireEvent.change(passwordInput, { target: { value: PASSWORD } });
-		fireEvent.click(button);
-		expect(mockedNavigate).toHaveBeenCalledTimes(1);
 	});
 });
