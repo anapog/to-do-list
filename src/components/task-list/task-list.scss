@@ -5,7 +5,9 @@
 	padding: 24px 12px;
 
 	@media (min-width: 769px) {
-		max-width: 500px;
+		min-width: 500px;
+		max-width: none;
+		width: fit-content;
 	}
 
 	.task-container {
