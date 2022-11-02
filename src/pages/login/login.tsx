@@ -1,28 +1,28 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import './login.scss';
 
 const Login = (): JSX.Element => {
 	const { login } = useAuth();
-	const [username, setUsername] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
+	const inputUsernameRef = useRef<HTMLInputElement>(null);
+	const inputPasswordRef = useRef<HTMLInputElement>(null);
 
 	const handleLogin = async (event: FormEvent): Promise<void> => {
 		event.preventDefault();
 		try {
-			await login({ username, password });
+			const username = inputUsernameRef?.current?.value;
+			const password = inputPasswordRef?.current?.value;
+
+			if (username) {
+				await login({ username, password });
+			}
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setUsername(event.target.value);
-	};
-
-	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setPassword(event.target.value);
-	};
+	const username = inputUsernameRef?.current?.value?.length;
+	const password = inputPasswordRef?.current?.value?.length;
 
 	return (
 		<div className="login" data-testid="login">
@@ -36,24 +36,22 @@ const Login = (): JSX.Element => {
 				<form className="login-form" onSubmit={handleLogin} data-testid="login-form">
 					<input
 						type="text"
+						ref={inputUsernameRef}
 						className="form-input"
-						value={username}
 						placeholder="Username"
-						onChange={handleUsernameChange}
 						data-testid="form-input-username"
 					/>
 					<input
 						type="password"
+						ref={inputPasswordRef}
 						className="form-input"
-						value={password}
 						placeholder="Password"
-						onChange={handlePasswordChange}
 						data-testid="form-input-password"
 					/>
 					<button
 						className="form-button"
 						type="submit"
-						disabled={!username?.length || !password?.length}
+						disabled={!username || !password}
 						data-testid="login-form-button"
 					>
 						Login
