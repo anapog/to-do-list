@@ -1,9 +1,9 @@
 import { FormEvent, useRef } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuthContext } from '../../providers/auth.provider';
 import './login.scss';
 
 const Login = (): JSX.Element => {
-	const { login } = useAuth();
+	const { login } = useAuthContext();
 	const inputUsernameRef = useRef<HTMLInputElement>(null);
 	const inputPasswordRef = useRef<HTMLInputElement>(null);
 
